@@ -205,6 +205,13 @@
   padding-top: 0.625rem;
 }
 
+.provider-logo {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.4rem;
+  border-radius: 2px;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .form-row {

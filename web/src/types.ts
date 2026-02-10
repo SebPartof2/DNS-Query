@@ -11,10 +11,12 @@ export interface IpInfo {
   region: string;
   country: string;
   org: string;
+  hostname: string;
 }
 
 export interface NsProviderInfo {
   provider: string;
+  logoDomain: string;
 }
 
 export interface QueryResult {

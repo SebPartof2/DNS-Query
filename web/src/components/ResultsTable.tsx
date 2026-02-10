@@ -1,12 +1,40 @@
 import { Fragment } from "react";
 import type { QueryResult, IpInfo } from "../types";
 
+const LOGOKIT_TOKEN = "pk_fr4c5e5fc1caaa89b3cef3";
+
+function logoUrl(domain: string): string {
+  return `https://img.logokit.com/${domain}?token=${LOGOKIT_TOKEN}`;
+}
+
+/** Extract a base domain from a hostname (e.g. "server-1.prod.google.com" → "google.com") */
+function extractBaseDomain(hostname: string): string {
+  const clean = hostname.replace(/\.$/, "").toLowerCase();
+  const parts = clean.split(".");
+  if (parts.length >= 2) {
+    return parts.slice(-2).join(".");
+  }
+  return clean;
+}
+
 function countryFlag(code: string): string {
   if (code.length !== 2) return "";
   const offset = 0x1f1e6;
   const a = code.toUpperCase().charCodeAt(0) - 65 + offset;
   const b = code.toUpperCase().charCodeAt(1) - 65 + offset;
   return String.fromCodePoint(a) + String.fromCodePoint(b);
+}
+
+function ProviderLogo({ domain }: { domain: string }) {
+  return (
+    <img
+      className="provider-logo"
+      src={logoUrl(domain)}
+      alt=""
+      width={16}
+      height={16}
+    />
+  );
 }
 
 function IpDetailRow({ info }: { info: IpInfo }) {
@@ -17,9 +45,14 @@ function IpDetailRow({ info }: { info: IpInfo }) {
     info.org,
   ].filter(Boolean);
 
+  const logoDomain = info.hostname ? extractBaseDomain(info.hostname) : "";
+
   return (
     <tr className="ip-detail-row">
-      <td colSpan={4}>{parts.join(" \u00B7 ")}</td>
+      <td colSpan={4}>
+        {logoDomain && <ProviderLogo domain={logoDomain} />}
+        {parts.join(" \u00B7 ")}
+      </td>
     </tr>
   );
 }
@@ -88,7 +121,10 @@ export function ResultsTable({ results, domain, elapsed }: ResultsTableProps) {
                       {ipDetail && <IpDetailRow info={ipDetail} />}
                       {nsDetail && (
                         <tr className="ip-detail-row">
-                          <td colSpan={4}>{nsDetail.provider}</td>
+                          <td colSpan={4}>
+                            <ProviderLogo domain={nsDetail.logoDomain} />
+                            {nsDetail.provider}
+                          </td>
                         </tr>
                       )}
                     </Fragment>

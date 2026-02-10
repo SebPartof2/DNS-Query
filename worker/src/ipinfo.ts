@@ -4,6 +4,7 @@ export interface IpInfo {
   region: string;
   country: string;
   org: string;
+  hostname: string;
 }
 
 interface IpInfoResponse {
@@ -12,6 +13,7 @@ interface IpInfoResponse {
   region?: string;
   country?: string;
   org?: string;
+  hostname?: string;
 }
 
 export async function lookupIp(
@@ -34,6 +36,7 @@ export async function lookupIp(
     region: data.region ?? "",
     country: data.country ?? "",
     org: data.org ?? "",
+    hostname: data.hostname ?? "",
   };
 }
 
