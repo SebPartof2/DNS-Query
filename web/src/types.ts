@@ -11,7 +11,7 @@ export interface IpInfo {
   region: string;
   country: string;
   org: string;
-  hostname: string;
+  asDomain: string;
 }
 
 export interface NsProviderInfo {

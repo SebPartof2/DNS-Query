@@ -7,16 +7,6 @@ function logoUrl(domain: string): string {
   return `https://img.logokit.com/${domain}?token=${LOGOKIT_TOKEN}`;
 }
 
-/** Extract a base domain from a hostname (e.g. "server-1.prod.google.com" → "google.com") */
-function extractBaseDomain(hostname: string): string {
-  const clean = hostname.replace(/\.$/, "").toLowerCase();
-  const parts = clean.split(".");
-  if (parts.length >= 2) {
-    return parts.slice(-2).join(".");
-  }
-  return clean;
-}
-
 function countryFlag(code: string): string {
   if (code.length !== 2) return "";
   const offset = 0x1f1e6;
@@ -45,12 +35,10 @@ function IpDetailRow({ info }: { info: IpInfo }) {
     info.org,
   ].filter(Boolean);
 
-  const logoDomain = info.hostname ? extractBaseDomain(info.hostname) : "";
-
   return (
     <tr className="ip-detail-row">
       <td colSpan={4}>
-        {logoDomain && <ProviderLogo domain={logoDomain} />}
+        {info.asDomain && <ProviderLogo domain={info.asDomain} />}
         {parts.join(" \u00B7 ")}
       </td>
     </tr>
