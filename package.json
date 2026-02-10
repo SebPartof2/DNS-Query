@@ -1,0 +1,10 @@
+{
+  "name": "dns-query",
+  "private": true,
+  "scripts": {
+    "dev:worker": "cd worker && npm run dev",
+    "dev:web": "cd web && npm run dev",
+    "deploy:worker": "cd worker && npm run deploy",
+    "build:web": "cd web && npm run build"
+  }
+}
