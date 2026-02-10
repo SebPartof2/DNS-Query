@@ -47,6 +47,7 @@ const STATUS_MESSAGES: Record<number, string> = {
 };
 
 export type { IpInfo } from "./ipinfo";
+export type { NsProviderInfo } from "./ns-providers";
 
 export interface QueryResult {
   recordType: string;
@@ -54,6 +55,7 @@ export interface QueryResult {
   statusMessage: string;
   answers: DnsAnswer[];
   ipInfo?: Record<string, import("./ipinfo").IpInfo>;
+  nsInfo?: Record<string, import("./ns-providers").NsProviderInfo>;
 }
 
 export async function queryDns(

@@ -1,5 +1,6 @@
 import { queryDns, queryAll, isValidRecordType } from "./dns-resolver";
 import { enrichAnswers } from "./ipinfo";
+import { enrichNsAnswers } from "./ns-providers";
 
 interface Env {
   IPINFO_TOKEN: string;
@@ -35,7 +36,7 @@ export default {
 
     const url = new URL(request.url);
 
-    if (url.pathname === "/query" && request.method === "POST") {
+    if ((url.pathname === "/query" || url.pathname === "/api/query") && request.method === "POST") {
       return handleQuery(request, env);
     }
 
@@ -89,6 +90,9 @@ async function handleQuery(request: Request, env: Env): Promise<Response> {
     if (env.IPINFO_TOKEN && (upperType === "A" || upperType === "AAAA")) {
       result.ipInfo = await enrichAnswers(result.answers, env.IPINFO_TOKEN);
     }
+    if (upperType === "NS") {
+      result.nsInfo = enrichNsAnswers(result.answers);
+    }
     return jsonResponse({ domain: cleanDomain, results: [result] });
   } catch (err) {
     const message =
@@ -104,6 +108,9 @@ async function enrichResults(
   for (const result of results) {
     if ((result.recordType === "A" || result.recordType === "AAAA") && result.answers.length > 0) {
       result.ipInfo = await enrichAnswers(result.answers, token);
+    }
+    if (result.recordType === "NS" && result.answers.length > 0) {
+      result.nsInfo = enrichNsAnswers(result.answers);
     }
   }
 }

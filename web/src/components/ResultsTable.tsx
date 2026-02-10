@@ -75,7 +75,8 @@ export function ResultsTable({ results, domain, elapsed }: ResultsTableProps) {
               </thead>
               <tbody>
                 {result.answers.map((answer, i) => {
-                  const info = result.ipInfo?.[answer.data];
+                  const ipDetail = result.ipInfo?.[answer.data];
+                  const nsDetail = result.nsInfo?.[answer.data];
                   return (
                     <Fragment key={i}>
                       <tr>
@@ -84,7 +85,12 @@ export function ResultsTable({ results, domain, elapsed }: ResultsTableProps) {
                         <td>{answer.TTL}s</td>
                         <td className="data-cell">{answer.data}</td>
                       </tr>
-                      {info && <IpDetailRow info={info} />}
+                      {ipDetail && <IpDetailRow info={ipDetail} />}
+                      {nsDetail && (
+                        <tr className="ip-detail-row">
+                          <td colSpan={4}>{nsDetail.provider}</td>
+                        </tr>
+                      )}
                     </Fragment>
                   );
                 })}

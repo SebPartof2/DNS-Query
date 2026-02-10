@@ -13,12 +13,17 @@ export interface IpInfo {
   org: string;
 }
 
+export interface NsProviderInfo {
+  provider: string;
+}
+
 export interface QueryResult {
   recordType: string;
   status: number;
   statusMessage: string;
   answers: DnsAnswer[];
   ipInfo?: Record<string, IpInfo>;
+  nsInfo?: Record<string, NsProviderInfo>;
 }
 
 export interface QueryResponse {
